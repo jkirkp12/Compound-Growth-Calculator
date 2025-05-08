@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compound Interest Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-blue-100 to-purple-100 flex justify-center items-center min-h-screen p-4">
+    <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform hover:scale-105">
+        <h1 class="text-2xl font-semibold text-blue-600 text-center mb-6">Compound Interest Calculator</h1>
+        <form id="compound-interest-form" class="space-y-4">
+            <div>
+                <label for="principal" class="block text-gray-700 text-sm font-bold mb-2">Principal Amount ($):</label>
+                <input type="number" id="principal" name="principal" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div>
+                <label for="rate" class="block text-gray-700 text-sm font-bold mb-2">Annual Interest Rate (%):</label>
+                <input type="number" id="rate" name="rate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div>
+                <label for="time" class="block text-gray-700 text-sm font-bold mb-2">Time Period (Years):</label>
+                <input type="number" id="time" name="time" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <input type="hidden" id="compound-frequency" name="compound-frequency" value="1">
+            <button type="submit" class="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
+                Calculate
+            </button>
+        </form>
+
+        <div id="results" class="mt-6 p-4 bg-gray-50 rounded-md shadow-inner">
+            <h2 class="text-xl font-semibold text-green-600 mb-2">Results:</h2>
+            <div id="initial-investment" class="text-gray-800">Initial Investment: $0</div>
+            <div id="interest-earned" class="text-blue-700">Interest Earned: $0</div>
+            <div id="final-amount" class="text-red-700 font-bold">Final Amount: $0</div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('compound-interest-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const principal = parseFloat(document.getElementById('principal').value);
+            const rate = parseFloat(document.getElementById('rate').value) / 100;
+            const time = parseInt(document.getElementById('time').value);
+            const compoundFrequency = parseInt(document.getElementById('compound-frequency').value);
+
+            if (isNaN(principal) || isNaN(rate) || isNaN(time) || principal <= 0 || rate <= 0 || time <= 0) {
+                alert('Please enter valid positive numbers for all fields.');
+                return;
+            }
+
+            const n = compoundFrequency;
+            const amount = principal * Math.pow(1 + (rate / n), n * time);
+            const interest = amount - principal;
+
+            document.getElementById('initial-investment').textContent = `Initial Investment: $${principal.toFixed(2)}`;
+            document.getElementById('interest-earned').textContent = `Interest Earned: $${interest.toFixed(2)}`;
+            document.getElementById('final-amount').textContent = `Final Amount: $${amount.toFixed(2)}`;
+        });
+    </script>
+</body>
+</html>
+
